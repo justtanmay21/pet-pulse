@@ -76,7 +76,7 @@ pet-pulse/
 - Emergency contacts and insurance plans are seeded once when the database is
   first created; edit `models.py`'s `init_db()` to change the starter data.
 
-## Results(Examples)
+## Results(Example)
 
 <img width="1358" height="896" alt="image" src="https://github.com/user-attachments/assets/4f423609-dbbe-4775-a29a-05222544df65" />
 <img width="1392" height="868" alt="image" src="https://github.com/user-attachments/assets/9a3d6a3f-007e-4cb3-a00f-8843be94b6a6" />
