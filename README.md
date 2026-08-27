@@ -3,8 +3,7 @@
 A centralized web app for managing pet healthcare — profiles, medical reports,
 appointments, insurance, and emergency vet contacts, all in one dashboard.
 
-Built with **Flask**, **Jinja2**, and **SQLite**. Originally a B.Tech (Honors)
-project report; rebuilt here as a runnable, minimal reference implementation.
+Built with **Flask**, **Jinja2**, and **SQLite** as a runnable, minimal reference implementation.
 
 ## Features
 
@@ -77,6 +76,3 @@ pet-pulse/
 - Emergency contacts and insurance plans are seeded once when the database is
   first created; edit `models.py`'s `init_db()` to change the starter data.
 
-## License
-
-MIT — do whatever you'd like with it.
