@@ -1,4 +1,4 @@
-# Pet Pulse 🐾
+# Pet Pulse 
 
 A centralized web app for managing pet healthcare — profiles, medical reports,
 appointments, insurance, and emergency vet contacts, all in one dashboard.
