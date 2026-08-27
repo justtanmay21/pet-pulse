@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Update {{ pet.name }}{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="shell">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Household</span>
+        <h2>Update {{ pet.name }}'s profile</h2>
+      </div>
+      <p>Change any detail below. Upload a new photo only if you want to replace the current one.</p>
+    </div>
+
+    <div class="form-card">
+      <form action="{{ url_for('main.update_pet', pet_id=pet.id) }}" method="POST" enctype="multipart/form-data">
+        <div class="field-row">
+          <div class="field">
+            <label for="name">Pet name</label>
+            <input type="text" id="name" name="name" value="{{ pet.name }}" required>
+          </div>
+          <div class="field">
+            <label for="animal">Animal / breed</label>
+            <input type="text" id="animal" name="animal" value="{{ pet.animal }}" required>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="age">Age</label>
+            <input type="text" id="age" name="age" value="{{ pet.age or '' }}">
+          </div>
+          <div class="field">
+            <label for="owner">Owner</label>
+            <input type="text" id="owner" name="owner" value="{{ pet.owner or '' }}">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="allergies">Allergies</label>
+          <input type="text" id="allergies" name="allergies" value="{{ pet.allergies or '' }}">
+        </div>
+
+        <div class="field">
+          <label for="file">Replace photo</label>
+          <input type="file" id="file" name="file" accept="image/*">
+          <div class="hint">Optional &mdash; leave empty to keep the current photo.</div>
+        </div>
+
+        <div class="form-foot">
+          <button type="submit" class="btn btn-accent">Save changes</button>
+          <a href="{{ url_for('main.index') }}" class="btn btn-ghost">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

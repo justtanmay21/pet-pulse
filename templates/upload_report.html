@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Upload Report{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="shell">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Medical records</span>
+        <h2>Upload a report</h2>
+      </div>
+      <p>Keep test results and vet notes synced to the right pet so they always show up on the dashboard.</p>
+    </div>
+
+    <div class="form-card">
+      {% if pets %}
+      <form action="{{ url_for('main.upload_report') }}" method="POST" enctype="multipart/form-data">
+        <div class="field">
+          <label for="pet_id">Select pet</label>
+          <select id="pet_id" name="pet_id" required>
+            {% for pet in pets %}
+            <option value="{{ pet.id }}">{{ pet.name }} ({{ pet.animal }})</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="report_name">Report name</label>
+          <input type="text" id="report_name" name="report_name" placeholder="e.g. Annual bloodwork &mdash; June 2026" required>
+        </div>
+
+        <div class="field">
+          <label for="report_file">Report file</label>
+          <input type="file" id="report_file" name="report_file" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" required>
+          <div class="hint">PDF, image, or Word document.</div>
+        </div>
+
+        <div class="form-foot">
+          <button type="submit" class="btn btn-accent">Upload report</button>
+          <a href="{{ url_for('main.index') }}" class="btn btn-ghost">Cancel</a>
+        </div>
+      </form>
+      {% else %}
+      <p>You'll need to <a href="{{ url_for('main.add_pet') }}">add a pet</a> before you can upload a report for them.</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

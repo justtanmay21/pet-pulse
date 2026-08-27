@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Insurance{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="shell">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Coverage</span>
+        <h2>Insurance management</h2>
+      </div>
+      <p>Compare available policies, then link the right one to each pet.</p>
+    </div>
+
+    <div class="table-wrap" style="margin-bottom:40px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Plan</th>
+            <th>Coverage</th>
+            <th>Premium / yr</th>
+            <th>Benefits</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in policies %}
+          <tr>
+            <td><strong>{{ p.name }}</strong><br><span style="color:var(--ink-faint); font-size:12.5px;">{{ p.description }}</span></td>
+            <td>{{ p.coverage }}</td>
+            <td class="price-tag">&#8377;{{ "%.0f"|format(p.premium) }}</td>
+            <td style="max-width:320px;">{{ p.benefits }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-head">
+      <div>
+        <h2 style="font-size:22px;">Link a policy to a pet</h2>
+      </div>
+    </div>
+
+    {% if pets %}
+    <div class="link-grid">
+      {% for pet in pets %}
+      <div class="link-card">
+        <h4>{{ pet.name }}</h4>
+        <div class="owner-line">{{ pet.animal }}{% if pet.owner %} &middot; {{ pet.owner }}{% endif %}</div>
+
+        <form action="{{ url_for('main.insurance') }}" method="POST">
+          <input type="hidden" name="pet_id" value="{{ pet.id }}">
+          <select name="policy_id" required>
+            <option value="" disabled selected>Select a policy&hellip;</option>
+            {% for p in policies %}
+            <option value="{{ p.id }}">{{ p.name }} &mdash; &#8377;{{ "%.0f"|format(p.premium) }}</option>
+            {% endfor %}
+          </select>
+          <button type="submit" class="btn btn-primary btn-sm btn-block">Link policy</button>
+        </form>
+
+        {% set linked = pet_policies.get(pet.id, []) %}
+        {% if linked %}
+        <div class="pet-tag-list" style="margin-top:12px;">
+          {% for pol in linked %}
+          <span class="pet-tag is-policy">{{ pol.name }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p>You'll need to <a href="{{ url_for('main.add_pet') }}">add a pet</a> before linking an insurance policy.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

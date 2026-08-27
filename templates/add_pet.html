@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Add a Pet{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="shell">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Household</span>
+        <h2>Add a new pet</h2>
+      </div>
+      <p>A few basics get them onto the dashboard &mdash; you can add reports and appointments afterwards.</p>
+    </div>
+
+    <div class="form-card">
+      <form action="{{ url_for('main.add_pet') }}" method="POST" enctype="multipart/form-data">
+        <div class="field-row">
+          <div class="field">
+            <label for="name">Pet name</label>
+            <input type="text" id="name" name="name" placeholder="e.g. Milo" required>
+          </div>
+          <div class="field">
+            <label for="animal">Animal / breed</label>
+            <input type="text" id="animal" name="animal" placeholder="e.g. Golden Retriever" required>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="age">Age</label>
+            <input type="text" id="age" name="age" placeholder="e.g. 3 years">
+          </div>
+          <div class="field">
+            <label for="owner">Owner</label>
+            <input type="text" id="owner" name="owner" placeholder="e.g. Keerthana">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="allergies">Allergies</label>
+          <input type="text" id="allergies" name="allergies" placeholder="e.g. Pollen, chicken &mdash; leave blank if none">
+        </div>
+
+        <div class="field">
+          <label for="file">Pet photo</label>
+          <input type="file" id="file" name="file" accept="image/*">
+          <div class="hint">Optional. PNG, JPG, GIF or WEBP.</div>
+        </div>
+
+        <div class="form-foot">
+          <button type="submit" class="btn btn-accent">Add pet</button>
+          <a href="{{ url_for('main.index') }}" class="btn btn-ghost">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

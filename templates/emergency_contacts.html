@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Emergency Contacts{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="shell">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">In case of emergency</span>
+        <h2>Nearby veterinary contacts</h2>
+      </div>
+      <p>A starter list you can edit in the database &mdash; wire this up to a maps API for live, location-based results.</p>
+    </div>
+
+    {% if contacts %}
+    <div class="contact-grid">
+      {% for c in contacts %}
+      <div class="contact-card">
+        <span class="contact-type">{{ c.type }}</span>
+        <h3>{{ c.name }}</h3>
+        <p class="contact-phone">{{ c.phone }}</p>
+        {% if c.address %}<p>{{ c.address }}</p>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p>No emergency contacts on file yet.</p>
+    {% endif %}
+
+    <div class="map-cta">
+      <p>Need a hospital right now?</p>
+      <a class="btn btn-primary btn-sm" href="https://www.google.com/maps/search/veterinary+near+me" target="_blank" rel="noopener">
+        Find vets near me
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

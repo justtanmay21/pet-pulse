@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <div class="shell hero-grid">
+    <div>
+      <span class="eyebrow">Pet Pulse &middot; healthcare dashboard</span>
+      <h1>Every heartbeat, one <em>calm</em> place to track it.</h1>
+      <p class="lede">
+        Records, reports, appointments, insurance and emergency contacts for every pet
+        in your household &mdash; kept in sync so you're never digging through folders
+        when it matters most.
+      </p>
+      <div class="hero-actions">
+        <a href="{{ url_for('main.add_pet') }}" class="btn btn-accent">+ Add a pet</a>
+        <a href="{{ url_for('main.schedule_appointment') }}" class="btn btn-ghost">Schedule appointment</a>
+      </div>
+      <div class="pulse-divider" style="max-width:420px;margin-top:34px;">
+        <svg viewBox="0 0 340 40" preserveAspectRatio="none">
+          <polyline points="0,20 60,20 76,6 96,34 116,20 140,20 152,10 168,30 184,20 340,20"
+            fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="hero-vitals">
+      <div class="vital-row">
+        <span class="vital-label">Pets tracked</span>
+        <span class="vital-value">{{ pets|length }}</span>
+      </div>
+      <div class="vital-row">
+        <span class="vital-label">Upcoming appointments</span>
+        <span class="vital-value">{{ appts_by_pet.values() | map('length') | sum }}</span>
+      </div>
+      <div class="vital-row">
+        <span class="vital-label">Reports on file</span>
+        <span class="vital-value">{{ reports_by_pet.values() | map('length') | sum }}</span>
+      </div>
+      <div class="vital-row">
+        <span class="vital-label">Policies linked</span>
+        <span class="vital-value">{{ policies_by_pet.values() | map('length') | sum }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="shell">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Household</span>
+        <h2>Your pets</h2>
+      </div>
+      <p>Update medical details, link an insurance policy, or open the latest report &mdash; all from one card per pet.</p>
+    </div>
+
+    {% if pets %}
+    <div class="pet-grid">
+      {% for pet in pets %}
+      <article class="pet-card">
+        <div class="pet-card-top">
+          {% if pet.image_file %}
+            <img class="pet-avatar" src="{{ url_for('static', filename='uploads/pets/' + pet.image_file) }}" alt="Photo of {{ pet.name }}">
+          {% else %}
+            <div class="pet-avatar-fallback">{{ pet.name[:1]|upper }}</div>
+          {% endif %}
+          <div>
+            <h3>{{ pet.name }}</h3>
+            <div class="pet-sub">{{ pet.animal }}{% if pet.owner %} &middot; owned by {{ pet.owner }}{% endif %}</div>
+          </div>
+        </div>
+
+        <div class="pet-card-body">
+          <div class="pet-fact">
+            <span class="k">Age</span>
+            <span class="v">{{ pet.age or "&mdash;" }}</span>
+          </div>
+          <div class="pet-fact">
+            <span class="k">Allergies</span>
+            <span class="v">{{ pet.allergies or "None on file" }}</span>
+          </div>
+          {% set appts = appts_by_pet.get(pet.id, []) %}
+          <div class="pet-fact">
+            <span class="k">Next appointment</span>
+            <span class="v">{{ appts[0].date if appts else "None scheduled" }}</span>
+          </div>
+
+          <div class="pet-tag-list">
+            {% for policy in policies_by_pet.get(pet.id, []) %}
+              {% if policy %}<span class="pet-tag is-policy">{{ policy.name }}</span>{% endif %}
+            {% endfor %}
+            {% for report in reports_by_pet.get(pet.id, []) %}
+              <span class="pet-tag is-report">
+                <a href="{{ url_for('main.display_report', filename=report.report_file) }}" target="_blank" rel="noopener">{{ report.report_name }}</a>
+              </span>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="pet-card-actions">
+          <a href="{{ url_for('main.update_pet', pet_id=pet.id) }}" class="btn btn-ghost btn-sm btn-block">Update</a>
+          <form action="{{ url_for('main.delete_pet', pet_id=pet.id) }}" method="post"
+                onsubmit="return confirm('Remove {{ pet.name }} from Pet Pulse?');">
+            <button type="submit" class="btn btn-danger-ghost btn-sm btn-block">Delete</button>
+          </form>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <div class="pulse-divider">
+        <svg viewBox="0 0 220 40" preserveAspectRatio="none">
+          <polyline points="0,20 40,20 52,8 68,32 84,20 100,20 108,12 120,28 132,20 220,20"
+            fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h3>No pets yet</h3>
+      <p>Add your first pet to start tracking reports, appointments and insurance in one place.</p>
+      <a href="{{ url_for('main.add_pet') }}" class="btn btn-accent" style="margin-top:14px;">+ Add a pet</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

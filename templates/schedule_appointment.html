@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Schedule Appointment{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="shell">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow">Care calendar</span>
+        <h2>Schedule an appointment</h2>
+      </div>
+      <p>Book an in-person visit or mark it as a virtual consultation.</p>
+    </div>
+
+    <div class="form-card">
+      {% if pets %}
+      <form action="{{ url_for('main.schedule_appointment') }}" method="POST">
+        <div class="field">
+          <label for="pet_id">Select pet</label>
+          <select id="pet_id" name="pet_id" required>
+            {% for pet in pets %}
+            <option value="{{ pet.id }}">{{ pet.name }} ({{ pet.animal }})</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="date">Appointment date &amp; time</label>
+          <input type="datetime-local" id="date" name="date" required>
+        </div>
+
+        <div class="field">
+          <label for="description">Description</label>
+          <textarea id="description" name="description" rows="3" placeholder="e.g. Annual checkup and vaccinations"></textarea>
+        </div>
+
+        <div class="checkbox-field field">
+          <input type="checkbox" id="virtual" name="virtual">
+          <label for="virtual">Virtual consultation</label>
+        </div>
+
+        <div class="form-foot">
+          <button type="submit" class="btn btn-accent">Schedule appointment</button>
+          <a href="{{ url_for('main.index') }}" class="btn btn-ghost">Cancel</a>
+        </div>
+      </form>
+      {% else %}
+      <p>You'll need to <a href="{{ url_for('main.add_pet') }}">add a pet</a> before scheduling an appointment.</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

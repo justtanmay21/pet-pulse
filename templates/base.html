@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Pet Pulse{% endblock %} · Pet Pulse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="{{ url_for('main.index') }}">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 24" width="34" height="20">
+            <polyline points="0,12 9,12 12,4 16,20 20,12 24,16 27,8 40,8"
+              fill="none" stroke="currentColor" stroke-width="2.4"
+              stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        Pet&nbsp;Pulse
+      </a>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="site-nav" id="siteNav">
+        <a href="{{ url_for('main.index') }}" class="{{ 'is-active' if request.endpoint == 'main.index' }}">Dashboard</a>
+        <a href="{{ url_for('main.add_pet') }}" class="{{ 'is-active' if request.endpoint == 'main.add_pet' }}">Add Pet</a>
+        <a href="{{ url_for('main.upload_report') }}" class="{{ 'is-active' if request.endpoint == 'main.upload_report' }}">Upload Report</a>
+        <a href="{{ url_for('main.schedule_appointment') }}" class="{{ 'is-active' if request.endpoint == 'main.schedule_appointment' }}">Appointments</a>
+        <a href="{{ url_for('main.emergency_contacts') }}" class="{{ 'is-active' if request.endpoint == 'main.emergency_contacts' }}">Emergency</a>
+        <a href="{{ url_for('main.insurance') }}" class="{{ 'is-active' if request.endpoint == 'main.insurance' }}">Insurance</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="shell">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-stack">
+            {% for category, message in messages %}
+              <div class="flash flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+    </div>
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <span>Pet Pulse &mdash; a student project for calmer pet healthcare.</span>
+      <span class="footer-pulse" aria-hidden="true">
+        <svg viewBox="0 0 120 24" width="90" height="18">
+          <polyline points="0,12 24,12 30,3 38,21 46,12 54,17 60,7 120,7"
+            fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
